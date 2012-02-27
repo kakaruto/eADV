@@ -309,13 +309,29 @@ var showMenu = function (el){
             touchCancel(event);
         }
 
+        deltaX = curX - startX;
+        deltaY = curY - startY;
+
+        //Math.abs(this.deltaX)
+
 
         // translate immediately 1-to-1
       	//css() = 'translate3d(' + (this.deltaX - this.index * this.width) + 'px,0,0)';
 
-      	// css(viewport, {
-       //      transform: translate(target.translate)
-       //  });
+        caluculateAngle();
+        determineSwipeDirection();
+
+        var tempTranslate = current.translate;
+
+        if ( swipeDirection == 'left' || swipeDirection == 'right') {               
+           	tempTranslate.x += deltaX;
+        } else if ( swipeDirection == 'up' ||  swipeDirection == 'down' ) {
+	          tempTranslate.y += deltaY;
+        }
+
+      	css(viewport, {
+            transform: translate(tempTranslate)
+        });
     };
     
     var touchEnd = function (event) {
