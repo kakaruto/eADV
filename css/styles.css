@@ -1,0 +1,58 @@
+
+body {
+	margin:0;
+}
+
+#viewport {
+	width:1024px;
+	height:768px;
+	
+}
+
+.step {
+	width:1024px;
+	height:768px;
+	border:1px solid black;
+	position: absolute;
+	top:0;
+	left:0;
+}
+
+td {
+	border:1px solid black;
+	width:100px;
+	height:80px;
+	text-align:center;
+}
+
+td.empty {
+	border:none;
+}
+
+nav {
+	z-index:1;
+	position: absolute;
+	top:744px;
+	left:0px;
+}
+
+nav a {
+	display: inline-block;
+
+	height:24px;
+	width:100px;
+	text-align: center;
+	text-decoration:none;
+
+	border:1px solid black;
+	border-radius:5px;
+}
+
+#intro p{
+	width:350px;
+	height:200px;
+	float:left;
+	
+	margin-left:50px;
+	border:1px dotted black;
+}

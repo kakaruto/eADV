@@ -5,9 +5,104 @@
 	<link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
-	<h1>Test</h1>
+	<nav>
+		<a href="">Sommaire</a>
+		<a href="">Parcours</a>
+		<a href="">Animations</a>
+		<a href="">Etudes</a>
+		<a href="">Videos</a>
+	</nav>
+	<div id="eADV">
 
-<script src="js/zepto.min.js"></script>
+		<div id="viewport">
+
+		<div id="mozaic" class="step" data-x="0" data-y="0" data-next="intro">
+			<h1>NOM MEDICAMENT</h1>
+			<table>
+				<tr>
+					<td>Intro</td>
+					<td>Molecule</td>
+					<td>Mode d'action</td>
+					<td>d</td>
+					<td>e</td>					
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td>b1</td>
+					<td>c1</td>
+					<td>d1</td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td>b2</td>
+					<td>c2</td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td>c3</td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="intro" class="step"  data-x="1024" data-y="0" data-prev="mozaic" data-next="molecule" data-down="b1">
+			<header>
+				<hgroup>
+					<h1>NOM MEDICAMENT</h1>
+					<h2>Baseline Lorem Ipsum</h2>
+				</hgroup>
+			</header>
+			<p>Argument 1</p>
+			<p>Argument 2</p>
+			<p>Argument 3</p>
+			<p>Argument 4</p>
+		</div>
+
+		<div id="molecule" class="step"  data-x="2048" data-y="0" data-prev="intro" data-next="modeAction">
+			Molecule
+		</div>
+
+		<div id="modeAction" class="step"  data-x="3072" data-y="0" data-prev="molecule" data-next="final">
+			Mode d'action
+		</div>
+
+		<div id="final" class="step"  data-x="4096" data-y="0" data-prev="modeAction">
+			Final
+		</div>
+
+		<div id="b1" class="step" data-x="1024" data-y="768" data-up="intro">
+			b1
+		</div>
+
+		<div class="step" data-x="2048" data-y="768" >
+			c1
+		</div>
+
+		<div class="step" data-x="3072" data-y="768" >
+			d1
+		</div>
+
+		<div class="step" data-x="1024" data-y="1536" >
+			b2
+		</div>
+
+		<div class="step" data-x="2048" data-y="1536" >
+			c2
+		</div>
+
+		<div class="step" data-x="2048" data-y="2304" >
+			c3
+		</div>
+
+	</div>
+</div>
+
+
 <script src="js/eADV.js"></script>
 </body>
 </html>
