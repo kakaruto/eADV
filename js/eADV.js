@@ -22,8 +22,8 @@ var pfx = (function () {
 var translate = function ( t ) {
     return " translate3d(" + t.x + "px," + t.y + "px," + t.z + "px) ";
 };
-
-var byId = function ( id ) {
+var
+ byId = function ( id ) {
     return document.getElementById(id);
 };
 
@@ -245,6 +245,140 @@ var showMenu = function (el){
         navigate(active.stepData.down);
     };
 
+    // Swipe management
+    var fingerCount = 0;
+    var startX = 0;
+    var startY = 0;
+    var curX = 0;
+    var curY = 0;
+    var deltaX = 0;
+    var deltaY = 0;
+    var horzDiff = 0;
+    var vertDiff = 0;
+    var minLength = 72; // the shortest distance the user may swipe
+    var swipeLength = 0;
+    var swipeAngle = null;
+    var swipeDirection = null;
+    var triggerElementID = null; // this variable is used throughout the script
+
+    var touchStart = function (event,passedID) {
+        // event delegation with "bubbling"
+        // check if event target (or any of its parents is a link or a step)
+        var target = event.target;
+        while ( (target.tagName != "A") && (target != document.body) ) {
+            target = target.parentNode;
+        }
+        
+        if ( target.tagName == "A" ) {
+            var href = target.getAttribute("href");
+            
+            // if it's a link to presentation step, target this step
+            if ( href && href[0] == '#' ) {
+                target = byId( href.slice(1) );
+            }
+        }
+        
+        if ( select(target) ) {
+            event.preventDefault();
+        }
+                
+        // disable the standard ability to select the touched object
+        event.preventDefault();
+        // get the total number of fingers touching the screen
+        fingerCount = event.touches.length;
+        // since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
+        // check that only one finger was used
+        if ( fingerCount == 1 ) {
+            // get the coordinates of the touch
+            startX = event.touches[0].pageX;
+            startY = event.touches[0].pageY;
+            // store the triggering element ID
+            triggerElementID = passedID;
+        } else {
+            // more than one finger touched so cancel
+            touchCancel(event);
+        }
+    };
+
+    var touchMove = function(event) {        
+        event.preventDefault();
+        if ( event.touches.length == 1 ) {
+            curX = event.touches[0].pageX;
+            curY = event.touches[0].pageY;
+        } else {
+            touchCancel(event);
+        }
+
+
+        // translate immediately 1-to-1
+      	//css() = 'translate3d(' + (this.deltaX - this.index * this.width) + 'px,0,0)';
+
+      	// css(viewport, {
+       //      transform: translate(target.translate)
+       //  });
+    };
+    
+    var touchEnd = function (event) {
+        
+        event.preventDefault();
+        // check to see if more than one finger was used and that there is a and ending coordinate
+        if ( fingerCount == 1 && curX != 0 ) {
+            // use the Distance Formula to determine the length of the swipe
+            swipeLength = Math.round(Math.sqrt(Math.pow(curX - startX,2) + Math.pow(curY - startY,2)));
+            // if the user swiped more than the minimum length, perform the appropriate action
+            if ( swipeLength >= minLength ) {
+                caluculateAngle();
+                determineSwipeDirection();
+                processingRoutine();
+                touchCancel(event);
+            } else {
+                touchCancel(event);
+            }   
+        } else {
+            touchCancel(event);
+        }
+    };
+
+    var touchCancel = function (event) {
+        // reset the variables back to default values
+        fingerCount = 0;
+        startX = 0;
+        startY = 0;
+        curX = 0;
+        curY = 0;
+        deltaX = 0;
+        deltaY = 0;
+        horzDiff = 0;
+        vertDiff = 0;
+        swipeLength = 0;
+        swipeAngle = null;
+        swipeDirection = null;
+        triggerElementID = null;
+    };
+    
+    var caluculateAngle = function () {
+        var X = startX-curX;
+        var Y = curY-startY;
+        var Z = Math.round(Math.sqrt(Math.pow(X,2)+Math.pow(Y,2))); //the distance - rounded - in pixels
+        var r = Math.atan2(Y,X); //angle in radians (Cartesian system)
+        swipeAngle = Math.round(r*180/Math.PI); //angle in degrees
+        if ( swipeAngle < 0 ) { swipeAngle =  360 - Math.abs(swipeAngle); }
+    };
+    
+    var determineSwipeDirection = function() {
+        if ( (swipeAngle <= 45) && (swipeAngle >= 0) ) {
+            swipeDirection = 'left';
+        } else if ( (swipeAngle <= 360) && (swipeAngle >= 315) ) {
+            swipeDirection = 'left';
+        } else if ( (swipeAngle >= 135) && (swipeAngle <= 225) ) {
+            swipeDirection = 'right';
+        } else if ( (swipeAngle > 45) && (swipeAngle < 135) ) {
+            swipeDirection = 'down';
+        } else {
+            swipeDirection = 'up';
+        }
+    };
+
     // Events    
     document.addEventListener("keydown", function ( event ) {
         if ( event.keyCode == 9 || ( event.keyCode >= 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
@@ -299,13 +433,20 @@ var showMenu = function (el){
         
         if ( select(target) ) {
             event.preventDefault();
-        }
-
-
-
-        
-        
+        }        
     }, false);
+
+     var processingRoutine = function () {
+        if ( swipeDirection == 'left' ) {               
+            selectPrev();
+        } else if ( swipeDirection == 'right' ) {
+            selectNext();
+        } else if ( swipeDirection == 'up' ) {
+            selectUp();
+        } else if ( swipeDirection == 'down' ) {
+           selectDown();        
+        }
+    };
 
 	initMenu();
     // Start with first step
