@@ -9,6 +9,14 @@ body {
 	
 }
 
+#debug
+{
+	position: absolute;
+	top:10px;
+	left:10px;
+	color:red;
+}
+
 .step {
 	width:1024px;
 	height:768px;

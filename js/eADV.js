@@ -119,8 +119,7 @@ var drawMenuBackground = function (rectWidth, rectHeight){
 };
 
 
-var showMenu = function (el){
-
+var showMenu = function (el){            
     var menu = byId('etudes_menu');
 
     menu.style.setProperty('display','block');    
@@ -220,6 +219,8 @@ var showMenu = function (el){
         current = target;
         active = el;
         
+        debugInfo();
+
         return el;
     };
 
@@ -261,6 +262,10 @@ var showMenu = function (el){
     var swipeDirection = null;
     var triggerElementID = null; // this variable is used throughout the script
 
+    var debugInfo = function(){
+        byId("debug").innerHTML = "StartX:" + startX + ", StartY:" + startY + ", CurX:" + curX + ", curY:" + curY + ", deltaX:" + deltaX + ", deltaY:" + deltaY + ", Direction:" + swipeDirection + ",X:" + current.translate.x + ", Active:" + active.id + ", Next:" + active.stepData.next + ", Prev:" + active.stepData.prev;
+    };
+
     var touchStart = function (event,passedID) {
         // event delegation with "bubbling"
         // check if event target (or any of its parents is a link or a step)
@@ -269,12 +274,27 @@ var showMenu = function (el){
             target = target.parentNode;
         }
         
+        var menuShowned = false;
         if ( target.tagName == "A" ) {
             var href = target.getAttribute("href");
             
             // if it's a link to presentation step, target this step
             if ( href && href[0] == '#' ) {
                 target = byId( href.slice(1) );
+            }
+            else if (href && href[0] == '*') {
+                //hack temporaire
+                showMenu(event.target);
+                menuShowned = true;
+            }          
+        }
+
+        if (menuShowned === false)
+        {
+            var menu = byId('etudes_menu');
+            if (menu.classList.contains('show'))
+            {
+                menu.setAttribute('class','hide');
             }
         }
         
@@ -298,6 +318,8 @@ var showMenu = function (el){
             // more than one finger touched so cancel
             touchCancel(event);
         }
+
+        debugInfo();
     };
 
     var touchMove = function(event) {        
@@ -309,8 +331,12 @@ var showMenu = function (el){
             touchCancel(event);
         }
 
+
+
         deltaX = curX - startX;
         deltaY = curY - startY;
+
+        debugInfo();
 
         //Math.abs(this.deltaX)
 
@@ -321,16 +347,48 @@ var showMenu = function (el){
         caluculateAngle();
         determineSwipeDirection();
 
-        var tempTranslate = current.translate;
+        var translate = "";
 
-        if ( swipeDirection == 'left' || swipeDirection == 'right') {               
-           	tempTranslate.x += deltaX;
-        } else if ( swipeDirection == 'up' ||  swipeDirection == 'down' ) {
-	          tempTranslate.y += deltaY;
-        }
+        // if ( swipeDirection == 'left' ) {
+            
+        // } else if ( swipeDirection == 'right' ) {
+        //     selectNext();
+        // } else if ( swipeDirection == 'up' ) {
+        //     selectUp();
+        // } else if ( swipeDirection == 'down' ) {
+        //    selectDown();        
+        // }
 
-      	css(viewport, {
-            transform: translate(tempTranslate)
+        var tempTranslate = { 
+            x : current.translate.x,
+            y : current.translate.y,
+            z : current.translate.z
+        };
+
+        if ( swipeDirection == 'left' ) {
+            if(active.stepData.next)
+            {
+                tempTranslate.x -= Math.abs(deltaX);
+            }
+            
+        } else if ( swipeDirection == 'right' ) {
+            if (active.stepData.prev)
+            {
+                tempTranslate.x += Math.abs(deltaX);
+            }
+            
+        } 
+        // else if ( swipeDirection == 'up' ) {
+        //     tempTranslate.y -= Math.abs(deltaY);
+        // } else if ( swipeDirection == 'down' ) {
+        //    tempTranslate.y += Math.abs(deltaY);     
+        // }
+
+       //alert("X:" + tempTranslate.x+", Y:" + tempTranslate.y+", Z:" + tempTranslate.z);
+       
+
+        css(viewport, {
+            transform: " translate3d(" + tempTranslate.x + "px," + tempTranslate.y + "px," + tempTranslate.z + "px) "
         });
     };
     
@@ -353,6 +411,8 @@ var showMenu = function (el){
         } else {
             touchCancel(event);
         }
+
+        //select(active);
     };
 
     var touchCancel = function (event) {
@@ -370,6 +430,8 @@ var showMenu = function (el){
         swipeAngle = null;
         swipeDirection = null;
         triggerElementID = null;
+
+        //select(active);
     };
     
     var caluculateAngle = function () {
@@ -420,7 +482,7 @@ var showMenu = function (el){
         }
     }, false);
 
-    document.addEventListener("click", function ( event ) {
+    document.addEventListener("click", function ( event ) {        
         // event delegation with "bubbling"
         // check if event target (or any of its parents is a link or a step)
         var target = event.target;
@@ -452,11 +514,31 @@ var showMenu = function (el){
         }        
     }, false);
 
+    document.addEventListener("touchstart", function (event)
+    {           
+        touchStart(event, "eADV");
+    });
+
+    document.addEventListener("touchend", function (event)
+    {       
+        touchEnd(event);
+    });
+
+    document.addEventListener("touchmove", function (event)
+    {       
+        touchMove(event);
+    });
+
+    document.addEventListener("touchcancel", function (event)
+    {       
+        touchCancel(event);
+    });
+
      var processingRoutine = function () {
-        if ( swipeDirection == 'left' ) {               
-            selectPrev();
+        if ( swipeDirection == 'left' ) {
+             selectNext();
         } else if ( swipeDirection == 'right' ) {
-            selectNext();
+            selectPrev();           
         } else if ( swipeDirection == 'up' ) {
             selectUp();
         } else if ( swipeDirection == 'down' ) {

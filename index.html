@@ -1,24 +1,31 @@
 <!doctype html>
 <html>
 <head>
+	<meta charset="utf-8" />
+
+	<!-- iPad Setup -->
+	<meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 	<title>eADV</title>
 	<link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
 	<div id="etudes_menu">
-	    <a href="#">Etude 1</a>
-	    <a href="#">Etude 2</a>
-	    <a href="#">Etude 3</a>
+	    <a href="#mozaic">Etude 1</a>
+	    <a href="#intro">Etude 2</a>
+	    <a href="#final">Etude 3</a>
  	</div>
 	<nav>
 		<a href="#mozaic">Sommaire</a>
 		<a href="#intro">Parcours</a>
 		<a href="">Animations</a>
-		<a href="#" onclick="showMenu(this);return false">Etudes</a>
+		<a href="*" onclick="showMenu(this);return false">Etudes</a>
 		<a href="">Videos</a>
 	</nav>
 	<div id="eADV">
-
+		<div id="debug"></div>
 		<div id="viewport">
 
 		<div id="mozaic" class="step" data-x="0" data-y="0" data-next="intro">
@@ -26,7 +33,7 @@
 			<table>
 				<tr>
 					<td>Intro</td>
-					<td>Molecule</td>
+					<td><a href="#intro">Molecule</a></td>
 					<td>Mode d'action</td>
 					<td>d</td>
 					<td>e</td>					
