@@ -56,3 +56,37 @@ nav a {
 	margin-left:50px;
 	border:1px dotted black;
 }
+
+/* source : http://www.russellbeattie.com/blog/creating-an-ipad-like-dropdown-menu-in-html5 */
+
+#etudes_menu{
+    position: absolute;
+    left: -1000px;
+    background-color: #fff;
+    padding: 20px 0px 0px;
+    background: -webkit-canvas(menu_background) no-repeat;
+    -webkit-transition: opacity 300ms ease-out;
+
+    z-index:1;
+}
+
+#etudes_menu a{
+    display: block;
+    margin: 7px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, 0% 50%, 0% 51%, from(#fff), to(#edeff3));
+        text-decoration: none;
+    color: inherit;
+}
+
+.hide { 
+    opacity: 0; 
+}
+
+.show {
+    opacity: 1;  
+}
