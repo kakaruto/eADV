@@ -75,11 +75,11 @@
 			<p>Argument 4</p>
 		</div>
 
-		<div id="molecule" class="step"  data-x="2048" data-y="0" data-prev="intro" data-next="modeAction">
+		<div id="molecule" class="step"  data-x="2048" data-y="0" data-prev="intro" data-next="modeAction" data-down="c1">
 			Molecule
 		</div>
 
-		<div id="modeAction" class="step"  data-x="3072" data-y="0" data-prev="molecule" data-next="final">
+		<div id="modeAction" class="step"  data-x="3072" data-y="0" data-prev="molecule" data-next="final" data-down="d1">
 			Mode d'action
 		</div>
 
@@ -87,27 +87,27 @@
 			Final
 		</div>
 
-		<div id="b1" class="step" data-x="1024" data-y="768" data-up="intro">
+		<div id="b1" class="step" data-x="1024" data-y="768" data-up="intro" data-down="b2">
 			b1
 		</div>
 
-		<div class="step" data-x="2048" data-y="768" >
+		<div id="c1" class="step" data-x="2048" data-y="768" data-up="molecule" data-down="c2" >
 			c1
 		</div>
 
-		<div class="step" data-x="3072" data-y="768" >
+		<div id="d1" class="step" data-x="3072" data-y="768" data-up="modeAction" >
 			d1
 		</div>
 
-		<div class="step" data-x="1024" data-y="1536" >
+		<div id="b2" class="step" data-x="1024" data-y="1536" data-up="b1" >
 			b2
 		</div>
 
-		<div class="step" data-x="2048" data-y="1536" >
+		<div id="c2" class="step" data-x="2048" data-y="1536" data-down="c3" data-up="c1" data-down="c3">
 			c2
 		</div>
 
-		<div class="step" data-x="2048" data-y="2304" >
+		<div id="c3" class="step" data-x="2048" data-y="2304" data-up="c2" >
 			c3
 		</div>
 

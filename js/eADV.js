@@ -431,7 +431,7 @@ var showMenu = function (el){
         swipeDirection = null;
         triggerElementID = null;
 
-        //select(active);
+        select(active);
     };
     
     var caluculateAngle = function () {
@@ -540,9 +540,9 @@ var showMenu = function (el){
         } else if ( swipeDirection == 'right' ) {
             selectPrev();           
         } else if ( swipeDirection == 'up' ) {
-            selectUp();
-        } else if ( swipeDirection == 'down' ) {
-           selectDown();        
+           selectDown();
+        } else if ( swipeDirection == 'down' ) {           
+           selectUp();   
         }
     };
 
